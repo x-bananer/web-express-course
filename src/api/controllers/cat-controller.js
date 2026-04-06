@@ -1,17 +1,19 @@
 import {
 	addCat,
 	findCatById,
+	findCatsByUserId,
 	listCats,
 	removeCat,
 	updateCat,
 } from "../model/cat-model.js";
 
-const getCats = (req, res) => {
-	res.json(listCats());
+const getCats = async (req, res) => {
+	const cats = await listCats();
+	res.json(cats);
 };
 
-const getCatById = (req, res) => {
-	const cat = findCatById(Number(req.params.id));
+const getCatById = async (req, res) => {
+	const cat = await findCatById(Number(req.params.id));
 
 	if (cat) {
 		res.json(cat);
@@ -20,12 +22,17 @@ const getCatById = (req, res) => {
 	}
 };
 
+const getCatsByUserId = async (req, res) => {
+	const cats = await findCatsByUserId(Number(req.params.id));
+	res.json(cats);
+};
+
 // create
-const postCat = (req, res) => {
+const postCat = async (req, res) => {
 	console.log(req.file);
 	console.log(req.body);
 
-	const result = addCat({
+	const result = await addCat({
 		...req.body,
 		filename: req.file ? req.file.filename : null,
 	});
@@ -38,8 +45,8 @@ const postCat = (req, res) => {
 };
 
 // update
-const putCat = (req, res) => {
-	const updatedCat = updateCat({
+const putCat = async (req, res) => {
+	const updatedCat = await updateCat({
 		id: Number(req.params.id),
 		...req.body,
 		...(req.file ? { filename: req.file.filename } : {}),
@@ -52,8 +59,8 @@ const putCat = (req, res) => {
 	}
 };
 
-const deleteCat = (req, res) => {
-	const deletedCat = removeCat(Number(req.params.id));
+const deleteCat = async (req, res) => {
+	const deletedCat = await removeCat(Number(req.params.id));
 
 	if (deletedCat) {
 		res.json({ message: "Cat deleted.", deletedCat });
@@ -62,4 +69,4 @@ const deleteCat = (req, res) => {
 	}
 };
 
-export { deleteCat, getCats, getCatById, postCat, putCat };
+export { deleteCat, getCats, getCatById, getCatsByUserId, postCat, putCat };
