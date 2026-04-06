@@ -1,6 +1,7 @@
 import {
 	addCat,
 	findCatById,
+	findCatsByUserId,
 	listCats,
 	removeCat,
 	updateCat,
@@ -19,6 +20,11 @@ const getCatById = async (req, res) => {
 	} else {
 		res.sendStatus(404);
 	}
+};
+
+const getCatsByUserId = async (req, res) => {
+	const cats = await findCatsByUserId(Number(req.params.id));
+	res.json(cats);
 };
 
 // create
@@ -63,4 +69,4 @@ const deleteCat = async (req, res) => {
 	}
 };
 
-export { deleteCat, getCats, getCatById, postCat, putCat };
+export { deleteCat, getCats, getCatById, getCatsByUserId, postCat, putCat };

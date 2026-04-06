@@ -6,12 +6,13 @@ import {
 	updateUser,
 } from "../model/user-model.js";
 
-const getUsers = (req, res) => {
-	res.json(listUsers());
+const getUsers = async (req, res) => {
+	const users = await listUsers();
+	res.json(users);
 };
 
-const getUserById = (req, res) => {
-	const user = findUserById(Number(req.params.id));
+const getUserById = async (req, res) => {
+	const user = await findUserById(Number(req.params.id));
 
 	if (user) {
 		res.json(user);
@@ -21,8 +22,8 @@ const getUserById = (req, res) => {
 };
 
 // create
-const postUser = (req, res) => {
-	const result = addUser(req.body);
+const postUser = async (req, res) => {
+	const result = await addUser(req.body);
 
 	if (result.id) {
 		res.status(201).json({ message: "New user added.", result });
@@ -32,8 +33,8 @@ const postUser = (req, res) => {
 };
 
 // update
-const putUser = (req, res) => {
-	const updatedUser = updateUser({
+const putUser = async (req, res) => {
+	const updatedUser = await updateUser({
 		id: Number(req.params.id),
 		...req.body,
 	});
@@ -45,8 +46,8 @@ const putUser = (req, res) => {
 	}
 };
 
-const deleteUser = (req, res) => {
-	const deletedUser = removeUser(Number(req.params.id));
+const deleteUser = async (req, res) => {
+	const deletedUser = await removeUser(Number(req.params.id));
 
 	if (deletedUser) {
 		res.json({ message: "User deleted.", deletedUser });

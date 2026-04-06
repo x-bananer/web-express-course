@@ -3,6 +3,7 @@ import multer from "multer";
 import {
 	getCats,
 	getCatById,
+	getCatsByUserId,
 	postCat,
 	putCat,
 	deleteCat,
@@ -24,6 +25,7 @@ const catRouter = express.Router();
 
 catRouter.route("/").get(getCats);
 catRouter.route("/").post(upload.single("cat"), createThumbnail, postCat);
+catRouter.route("/owner/:id").get(getCatsByUserId);
 
 catRouter.route("/:id").get(getCatById);
 catRouter.route("/:id").put(upload.single("cat"), putCat);

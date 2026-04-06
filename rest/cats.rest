@@ -4,6 +4,9 @@ GET http://127.0.0.1:3000/api/v1/cats
 ### Get cat by id
 GET http://127.0.0.1:3000/api/v1/cats/41
 
+### Get cats by user id
+GET http://127.0.0.1:3000/api/v1/cats/owner/37
+
 ### Create new cat (with image)
 POST http://127.0.0.1:3000/api/v1/cats
 Content-Type: multipart/form-data; boundary=WebAppBoundary
