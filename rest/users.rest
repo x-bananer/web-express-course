@@ -2,7 +2,7 @@
 GET http://127.0.0.1:3000/api/v1/users
 
 ### Get user by id
-GET http://127.0.0.1:3000/api/v1/users/3609
+GET http://127.0.0.1:3000/api/v1/users/37
 
 ### Create new user
 POST http://127.0.0.1:3000/api/v1/users
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### Update user
-PUT http://127.0.0.1:3000/api/v1/users/3609
+PUT http://127.0.0.1:3000/api/v1/users/37
 Content-Type: application/json
 
 {
@@ -29,4 +29,4 @@ Content-Type: application/json
 }
 
 ### Delete user
-DELETE http://127.0.0.1:3000/api/v1/users/3609
+DELETE http://127.0.0.1:3000/api/v1/users/37

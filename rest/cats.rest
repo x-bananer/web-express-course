@@ -2,21 +2,9 @@
 GET http://127.0.0.1:3000/api/v1/cats
 
 ### Get cat by id
-GET http://127.0.0.1:3000/api/v1/cats/9592
+GET http://127.0.0.1:3000/api/v1/cats/41
 
-### Create new cat
-POST http://127.0.0.1:3000/api/v1/cats
-Content-Type: application/json
-
-{
-  "name": "Barsik",
-  "weight": 6,
-  "owner": 3610,
-  "filename": "barsik-image-file",
-  "birthdate": "23.2.2025"
-}
-
-### Create new cat with image
+### Create new cat (with image)
 POST http://127.0.0.1:3000/api/v1/cats
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
@@ -29,13 +17,13 @@ Content-Disposition: form-data; name="weight"
 
 6
 --WebAppBoundary
-Content-Disposition: form-data; name="owner"
+Content-Disposition: form-data; name="owner_id"
 
-3610
+37
 --WebAppBoundary
 Content-Disposition: form-data; name="birthdate"
 
-23.2.2025
+2025-02-23
 --WebAppBoundary
 Content-Disposition: form-data; name="cat"; filename="dog.jpg"
 Content-Type: image/jpeg
@@ -44,16 +32,16 @@ Content-Type: image/jpeg
 --WebAppBoundary--
 
 ### Update cat
-PUT http://127.0.0.1:3000/api/v1/cats/9592
+PUT http://127.0.0.1:3000/api/v1/cats/45
 Content-Type: application/json
 
 {
-  "name": "Frank Updated",
-  "weight": 12,
-  "owner": 3609,
-  "filename": "updated-frank-file",
-  "birthdate": "23.2.2025"
+  "name": "Barsik Updated",
+  "weight": 7,
+  "owner_id": 37,
+  "filename": "1775488962844-dog.jpg",
+  "birthdate": "2025-02-23"
 }
 
 ### Delete cat
-DELETE http://127.0.0.1:3000/api/v1/cats/9592
+DELETE http://127.0.0.1:3000/api/v1/cats/45
