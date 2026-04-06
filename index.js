@@ -1,14 +1,14 @@
-import express from 'express';
-const hostname = '127.0.0.1';
+import express from "express";
+const hostname = "127.0.0.1";
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-    res.send('Welcome to my REST API!');
+app.get("/", (req, res) => {
+	res.send("Welcome to my REST API!");
 });
 
-app.use('/static', express.static('public'));
+app.use("/static", express.static("public"));
 
 app.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+	console.log(`Server running at http://${hostname}:${port}/`);
 });
