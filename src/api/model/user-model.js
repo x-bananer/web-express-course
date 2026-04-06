@@ -2,11 +2,11 @@
 const users = [
 	{
 		id: 3609,
-		name: 'John Doe',
-		username: 'johndoe',
-		email: 'john@metropolia.fi',
-		role: 'user',
-		password: 'password',
+		name: "John Doe",
+		username: "johndoe",
+		email: "john@metropolia.fi",
+		role: "user",
+		password: "password",
 	},
 ];
 
