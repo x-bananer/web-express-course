@@ -1,0 +1,32 @@
+### Get all cats
+GET http://127.0.0.1:3000/api/v1/cats
+
+### Get cat by id
+GET http://127.0.0.1:3000/api/v1/cats/9592
+
+### Create new cat
+POST http://127.0.0.1:3000/api/v1/cats
+Content-Type: application/json
+
+{
+  "name": "Barsik",
+  "weight": 6,
+  "owner": 3610,
+  "filename": "barsik-image-file",
+  "birthdate": "23.2.2025"
+}
+
+### Update cat
+PUT http://127.0.0.1:3000/api/v1/cats/9592
+Content-Type: application/json
+
+{
+  "name": "Frank Updated",
+  "weight": 12,
+  "owner": 3609,
+  "filename": "updated-frank-file",
+  "birthdate": "23.2.2025"
+}
+
+### Delete cat
+DELETE http://127.0.0.1:3000/api/v1/cats/9592
