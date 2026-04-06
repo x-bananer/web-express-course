@@ -12,37 +12,41 @@ const getUsers = async (req, res) => {
 	res.json(users);
 };
 
-const getUserById = async (req, res) => {
+const getUserById = async (req, res, next) => {
 	const user = await findUserById(Number(req.params.id));
 
 	if (user) {
 		res.json(user);
 	} else {
-		res.sendStatus(404);
+		const error = new Error("User not found");
+		error.status = 404;
+		next(error);
 	}
 };
 
 // create
-const postUser = async (req, res) => {
+const postUser = async (req, res, next) => {
 	const result = await addUser({
 		...req.body,
 		password: bcrypt.hashSync(req.body.password, 10),
 	});
 
-	if (result.user_id) {
-		res.status(201).json({ message: "New user added.", result });
-	} else {
-		res.sendStatus(400);
+	if (result.error) {
+		return next(new Error(result.error));
 	}
+
+	res.status(201).json({ message: "New user added.", result });
 };
 
 // update
-const putUser = async (req, res) => {
+const putUser = async (req, res, next) => {
 	if (
 		res.locals.user.user_id !== Number(req.params.id) &&
 		res.locals.user.role !== "admin"
 	) {
-		return res.sendStatus(403);
+		const error = new Error("Forbidden");
+		error.status = 403;
+		return next(error);
 	}
 
 	const userData = {
@@ -61,16 +65,20 @@ const putUser = async (req, res) => {
 	if (updatedUser) {
 		res.json({ message: "User updated.", updatedUser });
 	} else {
-		res.sendStatus(404);
+		const error = new Error("User not updated");
+		error.status = 404;
+		next(error);
 	}
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
 	if (
 		res.locals.user.user_id !== Number(req.params.id) &&
 		res.locals.user.role !== "admin"
 	) {
-		return res.sendStatus(403);
+		const error = new Error("Forbidden");
+		error.status = 403;
+		return next(error);
 	}
 
 	const deletedUser = await removeUser(Number(req.params.id));
@@ -78,7 +86,9 @@ const deleteUser = async (req, res) => {
 	if (deletedUser) {
 		res.json({ message: "User deleted.", deletedUser });
 	} else {
-		res.sendStatus(404);
+		const error = new Error("User not deleted");
+		error.status = 404;
+		next(error);
 	}
 };
 
