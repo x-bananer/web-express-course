@@ -16,6 +16,33 @@ Content-Type: application/json
   "birthdate": "23.2.2025"
 }
 
+### Create new cat with image
+POST http://127.0.0.1:3000/api/v1/cats
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="name"
+
+Barsik
+--WebAppBoundary
+Content-Disposition: form-data; name="weight"
+
+6
+--WebAppBoundary
+Content-Disposition: form-data; name="owner"
+
+3610
+--WebAppBoundary
+Content-Disposition: form-data; name="birthdate"
+
+23.2.2025
+--WebAppBoundary
+Content-Disposition: form-data; name="cat"; filename="dog.jpg"
+Content-Type: image/jpeg
+
+< ./dog.jpg
+--WebAppBoundary--
+
 ### Update cat
 PUT http://127.0.0.1:3000/api/v1/cats/9592
 Content-Type: application/json
