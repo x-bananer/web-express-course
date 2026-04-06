@@ -8,6 +8,7 @@ import {
 	putCat,
 	deleteCat,
 } from "../controllers/cat-controller.js";
+import { authenticateToken } from "../../middlewares/authentication.js";
 import { createThumbnail } from "../../middlewares/upload.js";
 
 const storage = multer.diskStorage({
@@ -24,11 +25,13 @@ const upload = multer({ storage });
 const catRouter = express.Router();
 
 catRouter.route("/").get(getCats);
-catRouter.route("/").post(upload.single("cat"), createThumbnail, postCat);
+catRouter
+	.route("/")
+	.post(authenticateToken, upload.single("cat"), createThumbnail, postCat);
 catRouter.route("/owner/:id").get(getCatsByUserId);
 
 catRouter.route("/:id").get(getCatById);
-catRouter.route("/:id").put(upload.single("cat"), putCat);
-catRouter.route("/:id").delete(deleteCat);
+catRouter.route("/:id").put(authenticateToken, upload.single("cat"), putCat);
+catRouter.route("/:id").delete(authenticateToken, deleteCat);
 
 export default catRouter;

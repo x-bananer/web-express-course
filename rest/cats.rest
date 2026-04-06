@@ -12,7 +12,7 @@ POST http://127.0.0.1:3000/api/v1/cats
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="name"
+Content-Disposition: form-data; name="cat_name"
 
 Barsik
 --WebAppBoundary
@@ -20,7 +20,7 @@ Content-Disposition: form-data; name="weight"
 
 6
 --WebAppBoundary
-Content-Disposition: form-data; name="owner_id"
+Content-Disposition: form-data; name="owner"
 
 37
 --WebAppBoundary
@@ -37,14 +37,16 @@ Content-Type: image/jpeg
 ### Update cat
 PUT http://127.0.0.1:3000/api/v1/cats/45
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "name": "Barsik Updated",
+  "cat_name": "Barsik Updated",
   "weight": 7,
-  "owner_id": 37,
+  "owner": 37,
   "filename": "1775488962844-dog.jpg",
   "birthdate": "2025-02-23"
 }
 
 ### Delete cat
 DELETE http://127.0.0.1:3000/api/v1/cats/45
+Authorization: Bearer {{token}}
