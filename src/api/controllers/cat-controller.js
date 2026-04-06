@@ -42,6 +42,7 @@ const putCat = (req, res) => {
 	const updatedCat = updateCat({
 		id: Number(req.params.id),
 		...req.body,
+		...(req.file ? { filename: req.file.filename } : {}),
 	});
 
 	if (updatedCat) {
