@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import {
 	addUser,
 	findUserById,
@@ -23,9 +24,12 @@ const getUserById = async (req, res) => {
 
 // create
 const postUser = async (req, res) => {
-	const result = await addUser(req.body);
+	const result = await addUser({
+		...req.body,
+		password: bcrypt.hashSync(req.body.password, 10),
+	});
 
-	if (result.id) {
+	if (result.user_id) {
 		res.status(201).json({ message: "New user added.", result });
 	} else {
 		res.sendStatus(400);
@@ -34,9 +38,24 @@ const postUser = async (req, res) => {
 
 // update
 const putUser = async (req, res) => {
-	const updatedUser = await updateUser({
-		id: Number(req.params.id),
+	if (
+		res.locals.user.user_id !== Number(req.params.id) &&
+		res.locals.user.role !== "admin"
+	) {
+		return res.sendStatus(403);
+	}
+
+	const userData = {
+		user_id: Number(req.params.id),
 		...req.body,
+	};
+
+	if (req.body.password) {
+		userData.password = bcrypt.hashSync(req.body.password, 10);
+	}
+
+	const updatedUser = await updateUser({
+		...userData,
 	});
 
 	if (updatedUser) {
@@ -47,6 +66,13 @@ const putUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
+	if (
+		res.locals.user.user_id !== Number(req.params.id) &&
+		res.locals.user.role !== "admin"
+	) {
+		return res.sendStatus(403);
+	}
+
 	const deletedUser = await removeUser(Number(req.params.id));
 
 	if (deletedUser) {

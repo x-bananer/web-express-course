@@ -16,9 +16,11 @@ const createThumbnail = async (req, res, next) => {
 		extension = "webp";
 	}
 
+	const originalPathWithoutExtension = req.file.path.replace(/\.[^.]+$/, "");
+
 	await sharp(req.file.path)
 		.resize(160, 160)
-		.toFile(`${req.file.path}_thumb.${extension}`);
+		.toFile(`${originalPathWithoutExtension}_thumb.${extension}`);
 	next();
 };
 

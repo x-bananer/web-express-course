@@ -5,10 +5,21 @@ const listUsers = async () => {
 	return rows;
 };
 
-const findUserById = async (id) => {
+const findUserById = async (userId) => {
 	const [rows] = await promisePool.execute(
-		"SELECT * FROM wsk_users WHERE id = ?",
-		[id],
+		"SELECT * FROM wsk_users WHERE user_id = ?",
+		[userId],
+	);
+	if (rows.length === 0) {
+		return false;
+	}
+	return rows[0];
+};
+
+const findUserByUsername = async (username) => {
+	const [rows] = await promisePool.execute(
+		"SELECT * FROM wsk_users WHERE username = ?",
+		[username],
 	);
 	if (rows.length === 0) {
 		return false;
@@ -26,14 +37,14 @@ const addUser = async (user) => {
 		return false;
 	}
 
-	return { id: result.insertId };
+	return { user_id: result.insertId };
 };
 
 const updateUser = async (updatedUser) => {
-	const { id, ...user } = updatedUser;
-	const sql = promisePool.format(`UPDATE wsk_users SET ? WHERE id = ?`, [
+	const { user_id, ...user } = updatedUser;
+	const sql = promisePool.format(`UPDATE wsk_users SET ? WHERE user_id = ?`, [
 		user,
-		id,
+		user_id,
 	]);
 	const [result] = await promisePool.execute(sql);
 	if (result.affectedRows === 0) {
@@ -42,18 +53,19 @@ const updateUser = async (updatedUser) => {
 	return { message: "success" };
 };
 
-const removeUser = async (id) => {
+const removeUser = async (userId) => {
 	const connection = await promisePool.getConnection();
 
 	try {
 		await connection.beginTransaction();
-		await connection.execute("DELETE FROM wsk_cats WHERE owner_id = ?", [
-			id,
+		await connection.execute("DELETE FROM wsk_cats WHERE owner = ?", [
+			userId,
 		]);
 
-		const sql = connection.format("DELETE FROM wsk_users WHERE id = ?", [
-			id,
-		]);
+		const sql = connection.format(
+			"DELETE FROM wsk_users WHERE user_id = ?",
+			[userId],
+		);
 		const [result] = await connection.execute(sql);
 
 		if (result.affectedRows === 0) {
@@ -77,4 +89,11 @@ const removeUser = async (id) => {
 	}
 };
 
-export { listUsers, findUserById, addUser, updateUser, removeUser };
+export {
+	listUsers,
+	findUserById,
+	findUserByUsername,
+	addUser,
+	updateUser,
+	removeUser,
+};
